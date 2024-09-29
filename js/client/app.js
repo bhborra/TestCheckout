@@ -124,7 +124,7 @@ async function onApproveCallback(data, actions) {
   }
 }
 
-function submitBuyerInfo() {
+/*function submitBuyerInfo() {
   const firstname = document.getElementById('buyer-firstname').value;
   const lastname = document.getElementById('buyer-lastname').value;
   const email = document.getElementById('buyer-email').value;
@@ -149,7 +149,7 @@ function submitBuyerInfo() {
   document.getElementById('display-zipcode').textContent = zipcode;
 
   document.getElementById('buyer-info-display').style.display = 'block';
-}
+} */
 
 
 // Example function to show a result to the user. Your site's UI library can be used instead.
