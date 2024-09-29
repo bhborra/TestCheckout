@@ -1,28 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shopping Cart</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 20px;
+            background-color: #f0f0f5;
+            color: #333;
+        }
+        h1, h2 {
+            color: #4a4a4a;
+            text-align: center; /* Center align headings */
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         table, th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
         }
         th, td {
-            padding: 15px;
+            padding: 12px; /* Slightly reduced padding for compactness */
             text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-weight: bold; /* Bold text for headers */
+        }
+        td {
+            background-color: #fafafa;
         }
         .total {
             font-weight: bold;
             text-align: right;
+            background-color: #e9f7f7; /* Highlight total row */
         }
         .cart {
             margin-top: 20px;
@@ -30,16 +48,35 @@
         img {
             max-width: 50px;
             height: auto;
+            border-radius: 5px;
         }
         .buyer-info {
-            margin-top: 20px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px; /* Added rounded corners */
+        }
+        .buyer-info label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
         }
         .buyer-info input, .buyer-info textarea {
             display: block;
-            margin-bottom: 10px;
-            padding: 8px;
+            margin-bottom: 15px;
+            padding: 12px; /* Increased padding for better usability */
             width: 100%;
             max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            background-color: #fafafa;
+            transition: border-color 0.3s; /* Smooth transition for border */
+        }
+        .buyer-info input:focus, .buyer-info textarea:focus {
+            border-color: #007bff; /* Highlight border on focus */
         }
         #order-id {
             font-size: 1.2em;
@@ -47,33 +84,64 @@
             color: #333;
             font-weight: bold;
         }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em; /* Consistent font size for buttons */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #buyer-info-display {
+            background-color: #e9f7f7;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        #buyer-info-display p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        #paypal-button-container, #card-form {
+            margin-top: 30px;
+        }
+        .card_container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto; /* Center the card form */
+        }
     </style>
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"
+        rel="stylesheet"
+        type="text/css"
+        href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"
     />
-    <title>PayPal JS SDK Advanced Integration - Checkout Flow</title>
     <script
-      src="https://www.paypal.com/sdk/js?components=buttons,card-fields&client-id=<%= clientId %>"
-      data-sdk-integration-source="developer-studio"
+        src="https://www.paypal.com/sdk/js?components=buttons,card-fields&client-id=<%= clientId %>"
+        data-sdk-integration-source="developer-studio"
     ></script>
-  </head>
-  <body>
+</head>
+<body>
 
     <h1>Shopping Cart</h1>
 
-  
-
     <!-- Shopping Cart -->
     <div id="cart" class="cart">
-        <h2>Your Cart</h2>
+        <p style="font-size: 2.0em;"><b>Your Cart</b></p>
         <div id="order-id" style="display: none;">Order ID: <span id="order-id-number"></span></div>
         <table>
             <thead>
                 <tr>
                     <th>Item</th>
-                   <th>ItemNumber</th>
+                    <th>Item Number</th>
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
@@ -81,11 +149,11 @@
             </thead>
             <tbody id="cart-items">
                 <tr>
-                    <th>Hoodie</th>
-                    <th>555</th>
-                    <th>1</th>
-                    <th>30</th>
-                    <th>35</th>
+                    <td>Hoodie</td>
+                    <td>555</td>
+                    <td>1</td>
+                    <td>$35</td>
+                    <td>$35</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -97,58 +165,128 @@
         </table>
     </div>
 
-   <!-- Buyer Information -->
-   <div class="buyer-info">
+    <!-- Buyer Information -->
+<div class="buyer-info">
     <h2>Buyer Information</h2>
     <form id="buyer-form">
-        <label for="buyer-firstname">First Name:</label>
-        <input type="text" id="buyer-firstname" name="firstname" placeholder="Enter your first name" required>
-        
-        <label for="buyer-lastname">Last Name:</label>
-        <input type="text" id="buyer-lastname" name="lastname" placeholder="Enter your last name" required>
-        
-        <label for="buyer-email">Email:</label>
-        <input type="email" id="buyer-email" name="email" placeholder="Enter your email" required>
-        
-        <label for="buyer-phone">Phone Number:</label>
-        <input type="tel" id="buyer-phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
-        
-        <label for="buyer-address">Shipping Address:</label>
-        <textarea id="buyer-address" name="address" rows="3" placeholder="Enter your shipping address" minlength="10" required></textarea>
-        
-        <label for="buyer-zipcode">Zip Code:</label>
-        <input type="text" id="buyer-zipcode" name="zipcode" placeholder="Enter your 5-digit zip code" pattern="[0-9]{5}" title="Please enter a valid 5-digit USA zip code" required>
-        
-        <button type="button" onclick="submitBuyerInfo()">Submit Buyer Info</button>
+   <form id="buyer-form">
+        <div class="form-group">
+            <label for="buyer-firstname">First Name:</label>
+            <input type="text" id="buyer-firstname" name="firstname" value="John" placeholder="Enter your first name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-lastname">Last Name:</label>
+            <input type="text" id="buyer-lastname" name="lastname" value="Doe" placeholder="Enter your last name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-email">Email:</label>
+            <input type="email" id="buyer-email" name="email" value="john.doe@example.com" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-phone">Phone Number:</label>
+            <input type="tel" id="buyer-phone" name="phone" value="4083353344" placeholder="Enter your phone number" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-address">Shipping Address:</label>
+            <input type="text" id="buyer-address" name="address" value=" 1 Main st" placeholder="Enter your street address" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-city">City:</label>
+            <input type="text" id="buyer-city" name="city" value="San Jose" placeholder="Enter your city" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-state">State:</label>
+            <input type="text" id="buyer-state" name="state" value="CA" placeholder="Enter your state" required>
+        </div>
+
+        <div class="form-group">
+            <label for="buyer-zipcode">Zip Code:</label>
+            <input type="text" id="buyer-zipcode" name="zipcode" value="95131" placeholder="Enter your 5-digit zip code" pattern="^\d{5}$" title="Please enter a valid 5-digit USA zip code" required>
+        </div>
+
     </form>
-       <!-- Display Buyer Information -->
-       <div id="buyer-info-display" style="display:none; margin-top:20px;">
-        <h3>Order Summary</h3>
-        <p><strong>First Name:</strong> <span id="display-firstname"></span></p>
-        <p><strong>Last Name:</strong> <span id="display-lastname"></span></p>
-        <p><strong>Email:</strong> <span id="display-email"></span></p>
-        <p><strong>Phone:</strong> <span id="display-phone"></span></p>
-        <p><strong>Shipping Address:</strong> <span id="display-address"></span></p>
-        <p><strong>Zip Code:</strong> <span id="display-zipcode"></span></p>
-    </div>
-
-
 </div>
 
+<style>
+    .buyer-info {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    .form-group {
+        margin-bottom: 15px; /* Space between form groups */
+    }
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        color: #333;
+    }
+    .form-group input,
+    .form-group textarea {
+        padding: 12px;
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1em;
+        background-color: #fafafa;
+        transition: border-color 0.3s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: #007bff;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    #buyer-info-display {
+        background-color: #e9f7f7;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+    #buyer-info-display p {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+</style>
+
+
     <div id="paypal-button-container" class="paypal-button-container"></div>
+    
     <!-- Containers for Card Fields hosted by PayPal -->
     <div id="card-form" class="card_container">
-      <div id="card-name-field-container"></div>
-      <div id="card-number-field-container"></div>
-      <div id="card-expiry-field-container"></div>
-      <div id="card-cvv-field-container"></div>
+        <div id="card-name-field-container"></div>
+        <div id="card-number-field-container"></div>
+        <div id="card-expiry-field-container"></div>
+        <div id="card-cvv-field-container"></div>
 
-      <br /><br />
-      <button id="card-field-submit-button" type="button">
-        Pay now with Card
-      </button>
+        <br /><br />
+        <button id="card-field-submit-button" type="button">
+            Pay now with Card
+        </button>
     </div>
+    
     <p id="result-message"></p>
     <script src="app.js"></script>
-  </body>
+</body>
 </html>
