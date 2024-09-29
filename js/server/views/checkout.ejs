@@ -3,6 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+        .total {
+            font-weight: bold;
+            text-align: right;
+        }
+        .cart {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 50px;
+            height: auto;
+        }
+        .buyer-info {
+            margin-top: 20px;
+        }
+        .buyer-info input, .buyer-info textarea {
+            display: block;
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+        #order-id {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
     <link
       rel="stylesheet"
       type="text/css"
@@ -15,6 +60,81 @@
     ></script>
   </head>
   <body>
+
+    <h1>Shopping Cart</h1>
+
+  
+
+    <!-- Shopping Cart -->
+    <div id="cart" class="cart">
+        <h2>Your Cart</h2>
+        <div id="order-id" style="display: none;">Order ID: <span id="order-id-number"></span></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                   <th>ItemNumber</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                <tr>
+                    <th>Hoodie</th>
+                    <th>555</th>
+                    <th>1</th>
+                    <th>30</th>
+                    <th>35</th>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="total">Grand Total:</td>
+                    <td id="cart-total">$35</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+   <!-- Buyer Information -->
+   <div class="buyer-info">
+    <h2>Buyer Information</h2>
+    <form id="buyer-form">
+        <label for="buyer-firstname">First Name:</label>
+        <input type="text" id="buyer-firstname" name="firstname" placeholder="Enter your first name" required>
+        
+        <label for="buyer-lastname">Last Name:</label>
+        <input type="text" id="buyer-lastname" name="lastname" placeholder="Enter your last name" required>
+        
+        <label for="buyer-email">Email:</label>
+        <input type="email" id="buyer-email" name="email" placeholder="Enter your email" required>
+        
+        <label for="buyer-phone">Phone Number:</label>
+        <input type="tel" id="buyer-phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
+        
+        <label for="buyer-address">Shipping Address:</label>
+        <textarea id="buyer-address" name="address" rows="3" placeholder="Enter your shipping address" minlength="10" required></textarea>
+        
+        <label for="buyer-zipcode">Zip Code:</label>
+        <input type="text" id="buyer-zipcode" name="zipcode" placeholder="Enter your 5-digit zip code" pattern="[0-9]{5}" title="Please enter a valid 5-digit USA zip code" required>
+        
+        <button type="button" onclick="submitBuyerInfo()">Submit Buyer Info</button>
+    </form>
+       <!-- Display Buyer Information -->
+       <div id="buyer-info-display" style="display:none; margin-top:20px;">
+        <h3>Order Summary</h3>
+        <p><strong>First Name:</strong> <span id="display-firstname"></span></p>
+        <p><strong>Last Name:</strong> <span id="display-lastname"></span></p>
+        <p><strong>Email:</strong> <span id="display-email"></span></p>
+        <p><strong>Phone:</strong> <span id="display-phone"></span></p>
+        <p><strong>Shipping Address:</strong> <span id="display-address"></span></p>
+        <p><strong>Zip Code:</strong> <span id="display-zipcode"></span></p>
+    </div>
+
+
+</div>
+
     <div id="paypal-button-container" class="paypal-button-container"></div>
     <!-- Containers for Card Fields hosted by PayPal -->
     <div id="card-form" class="card_container">
