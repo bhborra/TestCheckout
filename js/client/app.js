@@ -109,9 +109,7 @@ async function onApproveCallback(data, actions) {
     } else {
       // (3) Successful transaction -> Show confirmation or thank you message
       // Or go to another URL:  actions.redirect('thank_you.html');
-      resultMessage(
-        `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`
-      );
+      resultThankyou(transaction);
       console.log(
         "Capture result",
         orderData,
@@ -126,8 +124,46 @@ async function onApproveCallback(data, actions) {
   }
 }
 
+function submitBuyerInfo() {
+  const firstname = document.getElementById('buyer-firstname').value;
+  const lastname = document.getElementById('buyer-lastname').value;
+  const email = document.getElementById('buyer-email').value;
+  const phone = document.getElementById('buyer-phone').value;
+  const address = document.getElementById('buyer-address').value;
+  const zipcode = document.getElementById('buyer-zipcode').value;
+
+  if (address.length < 10) {
+      alert("Shipping address must be at least 10 characters long.");
+      return;
+  }
+  if (zipcode.length < 5) {
+    alert("zipcode must be 5 characters long.");
+    return;
+}
+
+  document.getElementById('display-firstname').textContent = firstname;
+  document.getElementById('display-lastname').textContent = lastname;
+  document.getElementById('display-email').textContent = email;
+  document.getElementById('display-phone').textContent = phone;
+  document.getElementById('display-address').textContent = address;
+  document.getElementById('display-zipcode').textContent = zipcode;
+
+  document.getElementById('buyer-info-display').style.display = 'block';
+}
+
+
 // Example function to show a result to the user. Your site's UI library can be used instead.
 function resultMessage(message) {
   const container = document.querySelector("#result-message");
   container.innerHTML = message;
+}
+
+function resultThankyou(transaction) {
+
+  localStorage.setItem('transactionid', JSON.stringify(transaction.id));
+  localStorage.setItem('transactionstatus', JSON.stringify(transaction.status));
+
+  // Redirect to the next page after transaction completes
+  window.location.href = 'thankyou.html';
+ 
 }
